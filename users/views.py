@@ -6,9 +6,10 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
-from users.serializers import UserSerializer
-
+from users.serializers import UserSerializer, PrivateAreaSerializer
+from users.models import PrivateArea
 # Create your views here.
 
 
@@ -55,3 +56,37 @@ class GetToken(APIView):
             return Response(
                 {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
             )
+
+
+
+class SinglePrivateAreaView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        data["user"] = request.user.id
+
+        allowed_vehicles_type = request.data.get("allowed_vehicles_type")
+        city = request.data.get("city")
+
+        if not city or not allowed_vehicles_type:
+            return Response(
+                {"error": "Missing credentials"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        serializer = PrivateAreaSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def get(self, request):
+        data = request.data
+        user_id = request.user.id
+        private_area = PrivateArea.objects.filter(user__id=user_id)
+        if private_area:
+            serializer = PrivateAreaSerializer(private_area, many=True)
+            return Response(serializer.data)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)    
