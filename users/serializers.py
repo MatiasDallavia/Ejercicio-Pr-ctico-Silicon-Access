@@ -27,20 +27,27 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-
 class PrivateAreaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PrivateArea
         fields = ("id", "user", "allowed_vehicles_type", "city")
 
-
     def create(self, validated_data):
-        print("*"*30)
+        print("*" * 30)
         print(validated_data)
         area = PrivateArea.objects.create(**validated_data)
         return area
-    
+
+    def update(self, instance, validated_data):
+        print("*" * 30)
+        print(validated_data)
+        for field, value in validated_data.items():
+            setattr(instance, field, value)
+        instance.save()
+        print(instance.city)    
+        return instance
+
     def validate(self, attrs):
         print("ATRS: ", attrs)
-        return attrs    
+        return attrs
