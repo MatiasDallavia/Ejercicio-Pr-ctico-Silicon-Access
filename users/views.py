@@ -63,7 +63,35 @@ class SinglePrivateAreaView(APIView):
 
     permission_classes = [IsAuthenticated]
 
+    def delete(self, request, pk):
+        data = request.data
+        user_id = request.user.id
+
+        private_area = PrivateArea.objects.filter(user__id=user_id, id=pk).first()
+        if private_area:
+            private_area.delete()
+            return Response({"status": "successful deletion"}, status=status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+    
+
+    def get(self, request, pk):
+        print("DENTRO" , pk)
+        user_id = request.user.id
+        private_area = PrivateArea.objects.filter(user__id=user_id, id=pk).first()
+        if private_area:
+            serializer = PrivateAreaSerializer(private_area)
+            return Response(serializer.data)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)    
+    
+
+class ListPrivateAreaView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
+        print("------")
+        # return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
         data = request.data
         data["user"] = request.user.id
 
@@ -89,4 +117,4 @@ class SinglePrivateAreaView(APIView):
         if private_area:
             serializer = PrivateAreaSerializer(private_area, many=True)
             return Response(serializer.data)
-        return Response({}, status=status.HTTP_204_NO_CONTENT)    
+        return Response({}, status=status.HTTP_204_NO_CONTENT)      
