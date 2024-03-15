@@ -1,0 +1,17 @@
+venv/
+.env
+__pycache__
+.vscode/
+static_cdn/
+media/*
+### Python template
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+
+# Distribution / packaging
+.Python
+env/
