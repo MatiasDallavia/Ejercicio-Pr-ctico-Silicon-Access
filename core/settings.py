@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework",
+    "rest_framework.authtoken",
+    "vehicles",    
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -75,7 +79,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "psqlextra.backend",
+        "ENGINE": "django.db.backends.postgresql",
         "NAME": "django_db",
         "USER": "postgres",
         "PASSWORD": "postgres",
