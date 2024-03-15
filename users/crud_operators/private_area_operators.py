@@ -1,16 +1,7 @@
-from core.operation_interface import AbstractOperationInterface
+from core.operator_interface import AbstractOperatorInterface
 
 
-class CreateUserOperator(AbstractOperationInterface):
-
-    def single_action(self):
-        pass
-
-    def list_action(self):
-        pass
-
-
-class RetriveUserOperator(AbstractOperationInterface):
+class CreatePrivateAreaOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
@@ -19,7 +10,7 @@ class RetriveUserOperator(AbstractOperationInterface):
         pass
 
 
-class UpdateUserOperator(AbstractOperationInterface):
+class RetrivePrivateAreaOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
@@ -28,7 +19,16 @@ class UpdateUserOperator(AbstractOperationInterface):
         pass
 
 
-class DeleteUserOperator(AbstractOperationInterface):
+class UpdatePrivateAreaOperator(AbstractOperatorInterface):
+
+    def single_action(self):
+        pass
+
+    def list_action(self):
+        pass
+
+
+class DeletePrivateAreaOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass

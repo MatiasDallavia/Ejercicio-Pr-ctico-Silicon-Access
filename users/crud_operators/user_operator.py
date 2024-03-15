@@ -1,7 +1,7 @@
 from core.operator_interface import AbstractOperatorInterface
 
 
-class CreateVehicleOperator(AbstractOperatorInterface):
+class CreateUserOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
@@ -10,7 +10,7 @@ class CreateVehicleOperator(AbstractOperatorInterface):
         pass
 
 
-class RetriveVehicleOperator(AbstractOperatorInterface):
+class RetriveUserOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
@@ -19,7 +19,7 @@ class RetriveVehicleOperator(AbstractOperatorInterface):
         pass
 
 
-class UpdateVehicleOperator(AbstractOperatorInterface):
+class UpdateUserOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
@@ -28,7 +28,7 @@ class UpdateVehicleOperator(AbstractOperatorInterface):
         pass
 
 
-class DeleteVehicleOperator(AbstractOperatorInterface):
+class DeleteUserOperator(AbstractOperatorInterface):
 
     def single_action(self):
         pass
