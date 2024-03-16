@@ -8,27 +8,14 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.models import PrivateArea
 from users.serializers import PrivateAreaSerializer, UserSerializer
+from core.permissions import IsPrivateAreaOwner
 
 # Create your views here.
 
 
 class UserRegistration(APIView):
     def post(self, request):
-        username = request.data.get("username")
-        password = request.data.get("password")
-        email = request.data.get("email")
-        first_name = request.data.get("first_name")
-        last_name = request.data.get("last_name")
-
-        if not all(
-            [bool(i) for i in [username, password, email, last_name, first_name]]
-        ):
-            return Response(
-                {"error": "Missing credentials"}, status=status.HTTP_400_BAD_REQUEST
-            )
-
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -61,43 +48,39 @@ class GetToken(APIView):
 
 class SinglePrivateAreaView(APIView):
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsPrivateAreaOwner]
 
-    def delete(self, request, pk):
-        data = request.data
-        user_id = request.user.id
+    def delete(self, request, area_pk):
+        user = request.user
 
-        private_area = PrivateArea.objects.filter(user__id=user_id, id=pk).first()
+        private_area = user.privatearea_set.filter(id=area_pk).first()
         if private_area:
             private_area.delete()
             return Response(
                 {"status": "successful deletion"}, status=status.HTTP_200_OK
             )
-        return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def get(self, request, pk):
-        print("DENTRO", pk)
-        user_id = request.user.id
-        private_area = PrivateArea.objects.filter(user__id=user_id, id=pk).first()
+    def get(self, request, area_pk):
+        user = request.user
+        
+        private_area = user.privatearea_set.filter(id=area_pk).first()
         if private_area:
             serializer = PrivateAreaSerializer(private_area)
             return Response(serializer.data)
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    def put(self, request, pk):
-        print("DENTRO", pk)
-        user_id = request.user.id
-        city = request.data.get("city")
-        allowed_vehicles_type = request.data.get("allowed_vehicles_type")
-        request.data["user"] = user_id
+    def put(self, request, area_pk):
 
-        private_area = PrivateArea.objects.filter(user__id=user_id, id=pk).first()
+        user = request.user
+        
+        private_area = user.privatearea_set.filter(id=area_pk).first()
         if private_area:
             serializer = PrivateAreaSerializer(private_area, request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
 class ListPrivateAreaView(APIView):
@@ -105,19 +88,9 @@ class ListPrivateAreaView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        print("------")
-        # return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
         data = request.data
         data["user"] = request.user.id
-
-        allowed_vehicles_type = request.data.get("allowed_vehicles_type")
-        city = request.data.get("city")
-
-        if not city or not allowed_vehicles_type:
-            return Response(
-                {"error": "Missing credentials"}, status=status.HTTP_400_BAD_REQUEST
-            )
 
         serializer = PrivateAreaSerializer(data=data)
         if serializer.is_valid():
@@ -126,10 +99,7 @@ class ListPrivateAreaView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request):
-        data = request.data
-        user_id = request.user.id
-        private_area = PrivateArea.objects.filter(user__id=user_id)
-        if private_area:
-            serializer = PrivateAreaSerializer(private_area, many=True)
-            return Response(serializer.data)
-        return Response({}, status=status.HTTP_204_NO_CONTENT)
+        user = request.user
+        private_areas = user.privatearea_set.all()
+        serializer = PrivateAreaSerializer(private_areas, many=True)
+        return Response(serializer.data)
