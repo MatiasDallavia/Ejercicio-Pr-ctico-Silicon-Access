@@ -16,7 +16,7 @@ class RetrieveCreateVehicleView(APIView):
     # Retrieves all vehicles for a specific area
     def get(self, request, area_pk):
         request.data["user"] = request.user
-        vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_gone=False)
+        vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_deleted=False)
 
         serializer = VehicleSerializer(vehicles, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -42,7 +42,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
 
         request.data["user"] = request.user
         vehicle = Vehicle.objects.filter(
-            id=vehicle_pk, private_area__id=area_pk, is_gone=False
+            id=vehicle_pk, private_area__id=area_pk, is_deleted=False
         ).first()
         if vehicle is None:
             return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -55,7 +55,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
         request.data["user"] = request.user
         request.data["private_area"] = area_pk
         vehicle = Vehicle.objects.filter(
-            id=vehicle_pk, private_area__id=area_pk, is_gone=False
+            id=vehicle_pk, private_area__id=area_pk, is_deleted=False
         ).first()
         serializer = VehicleSerializer(vehicle, request.data)
 
@@ -72,7 +72,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
     def delete(self, request, area_pk, vehicle_pk):
 
         vehicle = Vehicle.objects.filter(
-            id=vehicle_pk, private_area__id=area_pk, is_gone=False
+            id=vehicle_pk, private_area__id=area_pk, is_deleted=False
         ).first()
 
         if vehicle is None:
@@ -80,7 +80,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
                 {"status": "vehicle nout found"}, status=status.HTTP_404_BAD_REQUEST
             )
 
-        vehicle.is_gone = True
+        vehicle.is_deleted = True
         vehicle.exit_time = datetime.now()
         vehicle.save()
         return Response({"status": "deleted"}, status=status.HTTP_201_CREATED)

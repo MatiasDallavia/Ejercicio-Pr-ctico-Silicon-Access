@@ -1,3 +1,4 @@
+from core.permissions import IsPrivateAreaOwner
 from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
@@ -5,12 +6,10 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from core.permissions import IsPrivateAreaOwner
 from users.serializers import PrivateAreaSerializer, UserSerializer
 
-
 ################### Private Area ###################
+
 
 class RetrieveCreatePrivateAreaView(APIView):
 
@@ -44,36 +43,37 @@ class RetrieveUpdateDeletePrivateAreaView(APIView):
     def delete(self, request, area_pk):
         user = request.user
 
-        private_area = user.privatearea_set.filter(id=area_pk).first()
+        private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
         if private_area:
-            private_area.delete()
-            return Response(
-                {"status": "successful deletion"}, status=status.HTTP_200_OK
-            )
-        return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        private_area.is_deleted = True
+        return Response({"status": "successful deletion"}, status=status.HTTP_200_OK)
 
     # Retrieves a single PrivateArea from a specific User
     def get(self, request, area_pk):
         user = request.user
 
-        private_area = user.privatearea_set.filter(id=area_pk).first()
+        private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
         if private_area:
-            serializer = PrivateAreaSerializer(private_area)
-            return Response(serializer.data)
-        return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PrivateAreaSerializer(private_area)
+        return Response(serializer.data)
 
     # Updates a single PrivateArea from a specific User
     def put(self, request, area_pk):
 
         user = request.user
 
-        private_area = user.privatearea_set.filter(id=area_pk).first()
+        private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
         if private_area:
-            serializer = PrivateAreaSerializer(private_area, request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PrivateAreaSerializer(private_area, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
 
 
 ################### User ###################
@@ -108,7 +108,7 @@ class RetrieveToken(APIView):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             return Response({"token": token.key})
-        else:
-            return Response(
-                {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
-            )
+
+        return Response(
+            {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+        )
