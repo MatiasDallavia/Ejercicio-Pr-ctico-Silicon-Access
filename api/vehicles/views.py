@@ -16,7 +16,7 @@ class RetrieveCreateVehicleView(APIView):
     # Retrieves all vehicles for a specific area
     def get(self, request, area_pk):
         request.data["user"] = request.user
-        vehicles = Vehicle.objects.filter(private_area__id=area_pk)
+        vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_gone=False)
 
         serializer = VehicleSerializer(vehicles, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -66,7 +66,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        return Response(serializer.errors, status=status.status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # Soft-deletes a single vehicle from specified area
     def delete(self, request, area_pk, vehicle_pk):
