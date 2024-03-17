@@ -17,4 +17,4 @@ class Vehicle(models.Model):
     expiration_date = models.DateField(null=False)
     entry_time = models.DateTimeField(auto_now_add=True, null=False)
     exit_time = models.DateTimeField(null=True)
-    is_gone = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)

@@ -13,3 +13,4 @@ class PrivateArea(models.Model):
         )
     )
     city = models.CharField(max_length=25, null=False)
+    is_deleted = models.BooleanField(default=False)
