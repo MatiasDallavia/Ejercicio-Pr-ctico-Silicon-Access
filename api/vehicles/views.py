@@ -15,8 +15,14 @@ class RetrieveCreateVehicleView(APIView):
 
     # Retrieves all vehicles for a specific area
     def get(self, request, area_pk):
+        gone_vehicles = self.request.query_params.get("gone_vehicles")
+
         request.data["user"] = request.user
-        vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_deleted=False)
+        if gone_vehicles in ["true", "True", "yes"]:
+            vehicles = Vehicle.objects.filter(private_area__id=area_pk).order_by("entry_time", "exit_time")
+        
+        else:
+            vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_deleted=False)
 
         serializer = VehicleSerializer(vehicles, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -39,7 +45,6 @@ class RetrieveUpdateDeleteVehicleView(APIView):
 
     # Retrieves a single vehicle from specified area
     def get(self, request, area_pk, vehicle_pk):
-
         request.data["user"] = request.user
         vehicle = Vehicle.objects.filter(
             id=vehicle_pk, private_area__id=area_pk, is_deleted=False
