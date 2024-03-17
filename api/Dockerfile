@@ -28,6 +28,3 @@ EXPOSE 8000
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/api/entrypoint.sh"]
 
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-
