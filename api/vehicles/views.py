@@ -19,10 +19,14 @@ class RetrieveCreateVehicleView(APIView):
 
         request.data["user"] = request.user
         if gone_vehicles in ["true", "True", "yes"]:
-            vehicles = Vehicle.objects.filter(private_area__id=area_pk).order_by("entry_time", "exit_time")
-        
+            vehicles = Vehicle.objects.filter(private_area__id=area_pk).order_by(
+                "entry_time", "exit_time"
+            )
+
         else:
-            vehicles = Vehicle.objects.filter(private_area__id=area_pk, is_deleted=False)
+            vehicles = Vehicle.objects.filter(
+                private_area__id=area_pk, is_deleted=False
+            )
 
         serializer = VehicleSerializer(vehicles, many=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -65,7 +69,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
         serializer = VehicleSerializer(vehicle, request.data)
 
         if vehicle is None:
-            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+            return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
         if serializer.is_valid():
             serializer.save()

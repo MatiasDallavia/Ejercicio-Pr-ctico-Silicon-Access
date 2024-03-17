@@ -44,10 +44,11 @@ class RetrieveUpdateDeletePrivateAreaView(APIView):
         user = request.user
 
         private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
-        if private_area:
+        if private_area is None:
             return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
         private_area.is_deleted = True
+        private_area.save()
         return Response({"status": "successful deletion"}, status=status.HTTP_200_OK)
 
     # Retrieves a single PrivateArea from a specific User
@@ -55,7 +56,7 @@ class RetrieveUpdateDeletePrivateAreaView(APIView):
         user = request.user
 
         private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
-        if private_area:
+        if private_area is None:
             return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = PrivateAreaSerializer(private_area)
@@ -65,15 +66,17 @@ class RetrieveUpdateDeletePrivateAreaView(APIView):
     def put(self, request, area_pk):
 
         user = request.user
+        request.data["user"] = user.id
 
         private_area = user.privatearea_set.filter(id=area_pk, is_deleted=False).first()
-        if private_area:
-            return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+        if private_area is None:
+            return Response({"status": "not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = PrivateAreaSerializer(private_area, request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 ################### User ###################
