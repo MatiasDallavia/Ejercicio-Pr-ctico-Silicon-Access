@@ -1,11 +1,10 @@
 from datetime import datetime
 
+from core.permissions import IsPrivateAreaOwner
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from core.permissions import IsPrivateAreaOwner
 from vehicles.models import Vehicle
 from vehicles.serializers import VehicleSerializer
 
@@ -76,9 +75,10 @@ class RetrieveUpdateDeleteVehicleView(APIView):
             id=vehicle_pk, private_area__id=area_pk, is_gone=False
         ).first()
 
-        serializer = VehicleSerializer(vehicle, request.data)
         if vehicle is None:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"status": "vehicle nout found"}, status=status.HTTP_404_BAD_REQUEST
+            )
 
         vehicle.is_gone = True
         vehicle.exit_time = datetime.now()
