@@ -30,7 +30,7 @@ class RetrieveCreatePrivateAreaView(APIView):
     # Retrieves all PrivateAreas from a specific User
     def get(self, request):
         user = request.user
-        private_areas = user.privatearea_set.all()
+        private_areas = user.privatearea_set.filter(is_deleted=False)
         serializer = PrivateAreaSerializer(private_areas, many=True)
         return Response(serializer.data)
 
