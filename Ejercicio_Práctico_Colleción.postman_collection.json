@@ -1,0 +1,306 @@
+{
+	"info": {
+		"_postman_id": "9887dd70-d3c0-4abd-8768-bf448a6ffc6b",
+		"name": "Ejercicio_Práctico_Colleción",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26387859"
+	},
+	"item": [
+		{
+			"name": "vehicles",
+			"item": [
+				{
+					"name": "create_single_vehicle",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"MOTORCYCLE\",\n  \"owner_id\": \"11430204\",\n  \"color\": \"Red\",\n  \"patent\": \"ACJ7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2043-03-24\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/areas/1/vehicles/"
+					},
+					"response": []
+				},
+				{
+					"name": "update_single_vehicle",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"CAR\",\n  \"owner_id\": \"114030204\",\n  \"color\": \"Red\",\n  \"patent\": \"ABC7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2024-03-24\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/areas/1/vehicles/1/"
+					},
+					"response": []
+				},
+				{
+					"name": "get_single_vehicle",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token 34227bfbc9e300eaa3da3d3ef52854d37a996332"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/1/vehicles/1/"
+					},
+					"response": []
+				},
+				{
+					"name": "delete_single_vehicle",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/1/vehicles/1/"
+					},
+					"response": []
+				},
+				{
+					"name": "get_list_current_vehicles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/1/vehicles/"
+					},
+					"response": []
+				},
+				{
+					"name": "get_list_all_vehicles",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8000/api/areas/1/vehicles/?gone_vehicles=true",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"areas",
+								"1",
+								"vehicles",
+								""
+							],
+							"query": [
+								{
+									"key": "gone_vehicles",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "private_areas",
+			"item": [
+				{
+					"name": "create_area",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"allowed_vehicles_type\": [\"CAR\", \"MOTORCYCLE\"],\n  \"city\": \"Buenos Aires\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/areas/"
+					},
+					"response": []
+				},
+				{
+					"name": "update_area",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"allowed_vehicles_type\": [\"CAR\", \"TRUCK\"],\n  \"city\": \"Buenos Aires\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/areas/1/"
+					},
+					"response": []
+				},
+				{
+					"name": "get_areas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/"
+					},
+					"response": []
+				},
+				{
+					"name": "get_single_area ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/1/"
+					},
+					"response": []
+				},
+				{
+					"name": "delete_single_area",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Token {{authToken}}"
+							}
+						],
+						"url": "http://localhost:8000/api/areas/1/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "authentication",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"myUser\",\n    \"password\": \"myPassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/users/auth-token/"
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"myUser\",\n    \"password\": \"myPassword\",\n    \"email\": \"myEmail@gmail.com\",\n    \"first_name\": \"name\",\n    \"last_name\" : \"lastName\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8000/api/users/"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
