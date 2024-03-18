@@ -40,7 +40,7 @@ class VehicleSerializer(serializers.ModelSerializer):
         if len(patent) != 7 or not all(True for i in patent if i.isalnum()):
             raise serializers.ValidationError("Patent value has an invalid format")
 
-        if len(str(owner_id)) > 8:
+        if len(str(owner_id)) != 8:
             raise serializers.ValidationError("Owner Id format is invalid")
 
         return attrs
