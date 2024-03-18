@@ -3,6 +3,7 @@ from rest_framework.permissions import BasePermission
 from users.models import PrivateArea
 
 
+# checks if the area selected exists and if the request user owns it
 class IsPrivateAreaOwner(BasePermission):
 
     def has_permission(self, request, view):
