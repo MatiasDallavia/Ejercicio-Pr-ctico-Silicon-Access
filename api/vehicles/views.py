@@ -86,7 +86,7 @@ class RetrieveUpdateDeleteVehicleView(APIView):
 
         if vehicle is None:
             return Response(
-                {"status": "vehicle nout found"}, status=status.HTTP_404_BAD_REQUEST
+                {"status": "vehicle nout found"}, status=status.HTTP_404_NOT_FOUND
             )
 
         vehicle.is_deleted = True
