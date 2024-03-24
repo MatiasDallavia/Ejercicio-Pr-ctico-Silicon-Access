@@ -21,14 +21,14 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"MOTORCYCLE\",\n  \"owner_id\": \"11430204\",\n  \"color\": \"Red\",\n  \"patent\": \"ACJ7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2043-03-24\"\n}",
+							"raw": "{\n  \"type\": \"CAR\",\n  \"driver_name\": \"Jose Perez\",\n  \"color\": \"Red\",\n  \"patent\": \"ACJ7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2043-03-24\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "http://localhost:8000/api/areas/1/vehicles/"
+						"url": "http://localhost:8000/api/areas/2/vehicles/"
 					},
 					"response": []
 				},
@@ -44,7 +44,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"CAR\",\n  \"owner_id\": \"114030204\",\n  \"color\": \"Red\",\n  \"patent\": \"ABC7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2024-03-24\"\n}",
+							"raw": "{\n  \"type\": \"CAR\",\n  \"driver_name\": \"Jose Perez\",\n  \"color\": \"Red\",\n  \"patent\": \"ABC7AJG\",\n  \"insurance\": \"insuranceCompany\",\n  \"expiration_date\": \"2024-03-24\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -79,7 +79,7 @@
 								"value": "Token {{authToken}}"
 							}
 						],
-						"url": "http://localhost:8000/api/areas/1/vehicles/1/"
+						"url": "http://localhost:8000/api/areas/2/vehicles/8/"
 					},
 					"response": []
 				},
@@ -93,7 +93,7 @@
 								"value": "Token {{authToken}}"
 							}
 						],
-						"url": "http://localhost:8000/api/areas/1/vehicles/"
+						"url": "http://localhost:8000/api/areas/2/vehicles/"
 					},
 					"response": []
 				},
@@ -111,7 +111,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8000/api/areas/1/vehicles/?gone_vehicles=true",
+							"raw": "http://localhost:8000/api/areas/2/vehicles/?gone_vehicles=true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -120,7 +120,7 @@
 							"path": [
 								"api",
 								"areas",
-								"1",
+								"2",
 								"vehicles",
 								""
 							],
@@ -184,7 +184,7 @@
 								}
 							}
 						},
-						"url": "http://localhost:8000/api/areas/1/"
+						"url": "http://localhost:8000/api/areas/2/"
 					},
 					"response": []
 				},
@@ -212,7 +212,7 @@
 								"value": "Token {{authToken}}"
 							}
 						],
-						"url": "http://localhost:8000/api/areas/1/"
+						"url": "http://localhost:8000/api/areas/2/"
 					},
 					"response": []
 				},
@@ -236,7 +236,7 @@
 			"name": "authentication",
 			"item": [
 				{
-					"name": "login",
+					"name": "auth-token",
 					"request": {
 						"method": "POST",
 						"header": [],
