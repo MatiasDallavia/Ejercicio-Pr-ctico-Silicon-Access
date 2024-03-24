@@ -11,7 +11,7 @@ class VehicleSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "type",
-            "owner_id",
+            "driver_name",
             "private_area",
             "color",
             "patent",
@@ -23,7 +23,7 @@ class VehicleSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         type = attrs.get("type")
-        owner_id = attrs.get("owner_id")
+        driver_name = attrs.get("driver_name")
         private_area_id = attrs.get("private_area").id
         patent = attrs.get("patent")
 
@@ -40,8 +40,8 @@ class VehicleSerializer(serializers.ModelSerializer):
         if len(patent) != 7 or not all(True for i in patent if i.isalnum()):
             raise serializers.ValidationError("Patent value has an invalid format")
 
-        if len(str(owner_id)) != 8:
-            raise serializers.ValidationError("Owner Id format is invalid")
+        if not driver_name.replace(" ", "").isalpha():
+            raise serializers.ValidationError("Driver's name is invalid")
 
         return attrs
 

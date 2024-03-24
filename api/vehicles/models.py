@@ -9,8 +9,10 @@ class Vehicle(models.Model):
     type = models.CharField(
         choices=VEHICLE_TYPES_CHOISES, max_length=25, default="CAR", null=False
     )
-    private_area = models.ForeignKey(PrivateArea, null=False, on_delete=models.DO_NOTHING)
-    owner_id = models.BigIntegerField(null=False)
+    private_area = models.ForeignKey(
+        PrivateArea, null=False, on_delete=models.DO_NOTHING
+    )
+    driver_name = models.CharField(max_length=35)
     color = models.CharField(max_length=35, null=False)
     patent = models.CharField(max_length=7, null=False)
     insurance = models.CharField(max_length=35, null=False)
